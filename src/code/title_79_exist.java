@@ -1,0 +1,44 @@
+package code;
+
+public class title_79_exist {
+    private boolean[][] marked;
+    private char[][] board;
+    private int n;
+    private int m;
+    private int[][] direction = {{1,0},{0,1},{-1,0},{0,-1}};
+    private String word;
+    public boolean exist(char[][] board, String word) {
+        m = board.length;
+        if(m == 0)return false;
+        n = board[0].length;
+        marked = new boolean[m][n];
+        this.board = board;
+        this.word = word;
+        for(int i = 0;i < m;i++){
+            for(int j = 0;j < n;j++){
+                if(dfs(i,j,0))return true;
+            }
+        }
+        return false;
+    }
+    public boolean dfs(int i, int j, int start){
+        if(start == word.length()-1)return board[i][j] == word.charAt(start);
+        if(board[i][j] == word.charAt(start)){
+            marked[i][j] = true;
+            for(int k= 0;k < 4;i++){
+                int newX = i + direction[k][0];
+                int newY = j + direction[k][1];
+                if(compare(newX,newY) && !marked[newX][newY]){
+                    if(dfs(newX,newY,start+1)){
+                        return true;
+                    }
+                }
+            }
+            marked[i][j] = false;
+        }
+        return false;
+    }
+    public boolean compare(int x, int y){
+        return x >= 0 && x < m && y >=0 && y < n;
+    }
+}
